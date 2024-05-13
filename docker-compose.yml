@@ -1,11 +1,10 @@
-version: '3.2'
+version: '3.7'
 
 services:
   elasticsearch:
     build:
       context: elasticsearch/
-      args:
-        ELK_VERSION: $ELK_VERSION
+  
     volumes:
       - type: bind
         source: ./elasticsearch/config/elasticsearch.yml
@@ -19,15 +18,13 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTIC_PASSWORD: changeme
+      ELASTIC_PASSWORD: admin
     networks:
       - elk
 
   logstash:
     build:
       context: logstash/
-      args:
-        ELK_VERSION: $ELK_VERSION
     volumes:
       - type: bind
         source: ./logstash/config/logstash.yml
@@ -50,8 +47,7 @@ services:
   kibana:
     build:
       context: kibana/
-      args:
-        ELK_VERSION: $ELK_VERSION
+      
     volumes:
       - type: bind
         source: ./kibana/config/kibana.yml
